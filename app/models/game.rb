@@ -96,7 +96,7 @@ class Game < ApplicationRecord
   #
   # возвращает false — если 1) ответ неверный 2) время вышло 3) игра уже закончена ранее
   #   в любом случае прописывается :finished_at, :prize (если несгораемый уровень), :updated_at
-  # После вызова этого метода обновлится .status игры
+  # После вызова этого метода обновится .status игры
   #
   # letter = 'a','b','c' или 'd'
   def answer_current_question!(letter)

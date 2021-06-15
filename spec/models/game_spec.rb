@@ -65,6 +65,29 @@ RSpec.describe Game, type: :model do
       expect(game_w_questions.finished?).to be_falsey
     end
 
+    it '.answer_current_question!' do
+      q = game_w_questions.current_game_question
+
+      # Ответ правильный
+      expect(game_w_questions.answer_current_question!(q.correct_answer_key)).to be_truthy
+
+      # Ответ не правильный
+      expect(game_w_questions.answer_current_question!('a')).to be_falsey
+
+      # Ответ на последний вопрос
+      game_w_questions.answer_current_question!(q.correct_answer_key)
+      game_w_questions.current_level = Question::QUESTION_LEVELS.max + 1
+      game_w_questions.is_failed = false
+
+      expect(game_w_questions.finished?).to be_truthy
+      expect(game_w_questions.status).to eq(:won)
+
+      # Закончилось время
+      game_w_questions.created_at = Time.now - (Game::TIME_LIMIT + 1)
+      game_w_questions.is_failed = true
+      expect(game_w_questions.status).to eq(:timeout)
+    end
+
     it '.take money!' do
       q = game_w_questions.current_game_question
       game_w_questions.answer_current_question!(q.correct_answer_key)
