@@ -109,4 +109,14 @@ RSpec.describe Game, type: :model do
       expect(game_w_questions.status).to eq(:in_progress)
     end
   end
+
+  context 'access methods' do
+    it '.current_game_question' do
+      expect(game_w_questions.current_level).to eq(0)
+    end
+
+    it '.previous_level' do
+      expect(game_w_questions.current_level - 1).to eq(-1)
+    end
+  end
 end
