@@ -1,4 +1,23 @@
 Rails.application.routes.draw do
+  root 'users#index'
+
+  # Путь для админки
+  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+
+  # Пути для формы регистрации, входа и т.д.
   devise_for :users
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+
+  # в профиле юзера показываем его игры, на главной - список лучших игроков
+  resources :users, only: %i[index show]
+
+  resources :games, only: %i[create show] do
+    # доп. методы ресурса:
+    put 'help', on: :member # помощь зала
+    put 'answer', on: :member # ответ на текущий вопрос
+    put 'take_money', on: :member #  игрок берет деньги
+  end
+
+  # Ресурс в единственном числе - ВопросЫ
+  # для загрузки админом сразу пачки вопросОВ
+  resource :questions, only: %i[new create]
 end
