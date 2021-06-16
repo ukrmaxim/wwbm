@@ -1,20 +1,20 @@
 <%# Этот js-код будет выполнен прямо на странице игры, используя информацию от сервера %>
 
 <% if @answer_is_correct && !@game.finished? %>
-  <%# Если игра ещё не закончена (был дан правильный ответ на не последний вопрос), %>
-  <%# то нам надо немного обновить экран: %>
-  <%# вывести новый вопрос, поменять текущий приз и скрыть старые подсказки %>
+<%# Если игра ещё не закончена (был дан правильный ответ на не последний вопрос), %>
+<%# то нам надо немного обновить экран: %>
+<%# вывести новый вопрос, поменять текущий приз и скрыть старые подсказки %>
 
-  $('.game-question').html("<%= escape_javascript (
-      render partial: 'game_question', object: @game_question
-    ) %>");
+document.querySelector('.game-question').innerHTML =
+    '<%= j(render partial: 'game_question', object: @game_question) %>'
 
-  current_prize = $('.game-prizes').find('.active').toggleClass('active');
-  current_prize.prev().toggleClass('active');
+current_prize = document.querySelector('.game-prizes .active')
+current_prize.classList.toggle('active')
+current_prize.previousElementSibling.classList.toggle('active')
 
-  $('.game-help-info').hide();
+document.querySelector('.game-help-info').style.display = "none"
 <% else %>
-  <%# Если игра закончилась, тупо редиректим на профиль с помощью js %>
+<%# Если игра закончилась, тупо редиректим на профиль с помощью js %>
 
-  window.location.href = '<%= user_path(current_user) %>';
+window.location.href = '<%= user_path(current_user) %>';
 <% end %>

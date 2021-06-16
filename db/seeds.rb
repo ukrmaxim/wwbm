@@ -5,6 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+#
 Question.create(level: 0, text: '2 + 2 = ...', answer1: '4', answer2: '5', answer3: 'точно не известно', answer4: '-1')
 Question.create(level: 1, text: 'А?', answer1: 'Б!', answer2: 'чо', answer3: 'хз', answer4: '-1')
 Question.create(level: 2, text: 'Семки есть?', answer1: '42', answer2: 'Кепка', answer3: 'хз', answer4: 'Абибас')
