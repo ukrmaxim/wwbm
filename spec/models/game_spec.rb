@@ -62,30 +62,7 @@ RSpec.describe Game, type: :model do
 
       # Игра продолжается
       expect(game_w_questions.status).to eq(:in_progress)
-      expect(game_w_questions.finished?).to be_falsey
-    end
-
-    it '.answer_current_question!' do
-      q = game_w_questions.current_game_question
-
-      # Ответ правильный
-      expect(game_w_questions.answer_current_question!(q.correct_answer_key)).to be_truthy
-
-      # Ответ не правильный
-      expect(game_w_questions.answer_current_question!('a')).to be_falsey
-
-      # Ответ на последний вопрос
-      game_w_questions.answer_current_question!(q.correct_answer_key)
-      game_w_questions.current_level = Question::QUESTION_LEVELS.max + 1
-      game_w_questions.is_failed = false
-
-      expect(game_w_questions.finished?).to be_truthy
-      expect(game_w_questions.status).to eq(:won)
-
-      # Закончилось время
-      game_w_questions.created_at = Time.now - (Game::TIME_LIMIT + 1)
-      game_w_questions.is_failed = true
-      expect(game_w_questions.status).to eq(:timeout)
+      expect(game_w_questions.finished?).to be false
     end
 
     it '.take money!' do
@@ -95,16 +72,52 @@ RSpec.describe Game, type: :model do
       prize = game_w_questions.prize
 
       expect(prize).to be > 0
-      expect(game_w_questions.finished?).to be_truthy
+      expect(game_w_questions.finished?).to be true
       expect(game_w_questions.status).to eq :money
       expect(user.balance).to eq prize
+    end
+  end
+
+  context '.answer_current_question!' do
+    it 'correct answer' do
+      q = game_w_questions.current_game_question
+
+      expect(game_w_questions.answer_current_question!(q.correct_answer_key)).to be true
+      expect(game_w_questions.current_level).to eq(1)
+      expect(game_w_questions.status).to eq(:in_progress)
+    end
+
+    it 'wrong answer' do
+      expect(game_w_questions.answer_current_question!('a')).to be false
+      expect(game_w_questions.finished?).to be true
+      expect(game_w_questions.status).to eq(:fail)
+    end
+
+    it 'correct answer to the last question' do
+      q = game_w_questions.current_game_question
+      game_w_questions.answer_current_question!(q.correct_answer_key)
+      game_w_questions.current_level = 15
+      game_w_questions.finished_at = Time.now
+
+      expect(game_w_questions.finished?).to be true
+      expect(game_w_questions.status).to eq(:won)
+    end
+
+    it 'answer after timeout' do
+      q = game_w_questions.current_game_question
+      game_w_questions.answer_current_question!(q.correct_answer_key)
+      game_w_questions.created_at = Time.now - (Game::TIME_LIMIT + 1)
+      game_w_questions.is_failed = true
+
+      expect(game_w_questions.time_out!).to be true
+      expect(game_w_questions.status).to eq(:timeout)
     end
   end
 
   context '.status' do
     before(:each) do
       game_w_questions.finished_at = Time.now
-      expect(game_w_questions.finished?).to be_truthy
+      expect(game_w_questions.finished?).to be true
     end
 
     it ':won' do
