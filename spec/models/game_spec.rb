@@ -135,11 +135,11 @@ RSpec.describe Game, type: :model do
 
   context 'access methods' do
     it '.current_game_question' do
-      expect(game_w_questions.current_level).to eq(0)
+      expect(game_w_questions.current_game_question.question.level).to eq(game_w_questions.current_level)
     end
 
     it '.previous_level' do
-      expect(game_w_questions.current_level - 1).to eq(-1)
+      expect(game_w_questions.previous_level).to eq(-1)
     end
   end
 end
