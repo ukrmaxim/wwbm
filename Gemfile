@@ -20,4 +20,5 @@ group :development, :test do
   gem 'pry-rails'
   gem 'rspec-rails', '~> 5.0', '>= 5.0.1'
   gem 'shoulda-matchers', '~> 4.5', '>= 4.5.1'
+  gem 'rails-controller-testing', '~> 1.0', '>= 1.0.5'
 end

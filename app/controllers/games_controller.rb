@@ -26,8 +26,8 @@ class GamesController < ApplicationController
 
       # отправляемся на страницу игры
       redirect_to game_path(@game), notice: t('controllers.games.game_created', created_at: @game.created_at)
-    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => ex # если ошибка создания игры
-      Rails.logger.error("Error creating game for user #{current_user.id}, msg = #{ex}. #{ex.backtrace}")
+    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e # если ошибка создания игры
+      Rails.logger.error("Error creating game for user #{current_user.id}, msg = #{e}. #{e.backtrace}")
       # отправляемся назад с алертом
       redirect_to :back, alert: t('controllers.games.game_not_created')
     end
@@ -65,7 +65,7 @@ class GamesController < ApplicationController
   def take_money
     @game.take_money!
     redirect_to user_path(current_user),
-                flash: { warning: t('controllers.games.game_finished',
+                flash: { notice: t('controllers.games.game_finished',
                                     prize: view_context.number_to_currency(@game.prize)) }
   end
 
@@ -74,7 +74,7 @@ class GamesController < ApplicationController
   def help
     # используем помощь в игре и по результату задаем сообщение юзеру
     msg = if @game.use_help(params[:help_type].to_sym)
-            { flash: { info: t('controllers.games.help_used') } }
+            { flash: { notice: t('controllers.games.help_used') } }
           else
             { alert: t('controllers.games.help_not_used') }
           end

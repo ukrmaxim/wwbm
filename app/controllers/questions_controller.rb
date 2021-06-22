@@ -37,8 +37,8 @@ class QuestionsController < ApplicationController
 
     # отправляем на страницу new и выводим статистику о проделаных операциях
     redirect_to new_questions_path,
-                notice: "Уровень #{level}, обработано #{file_lines.size}," +
-                  " создано #{file_lines.size - failed_count}," +
+                notice: "Уровень #{level}, обработано #{file_lines.size}," \
+                  " создано #{file_lines.size - failed_count}," \
                   " время #{Time.at((Time.now - start_time).to_i).utc.strftime '%S.%L сек'}"
   end
 
