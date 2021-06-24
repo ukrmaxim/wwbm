@@ -132,7 +132,7 @@ class Game < ApplicationRecord
   def use_help(help_type)
     help_types = %i[fifty_fifty audience_help friend_call]
     help_type = help_type.to_sym
-    raise ArgumentError.new('wrong help_type') unless help_types.include?(help_type)
+    raise ArgumentError, 'wrong help_type' unless help_types.include?(help_type)
 
     unless self["#{help_type}_used"]
       self["#{help_type}_used"] = true
