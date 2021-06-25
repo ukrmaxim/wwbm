@@ -106,6 +106,18 @@ RSpec.describe GamesController, type: :controller do
       expect(flash.empty?).to be true # удачный ответ не заполняет flash
     end
 
+    it 'wrong answer' do
+      correct_answer_key = game_w_questions.current_game_question.correct_answer_key
+      params = { id: game_w_questions.id, letter: (%w[a b c d] - [correct_answer_key]).sample }
+      put :answer, params: params
+      game = assigns(:game)
+
+      expect(game.finished?).to be true
+      expect(game.is_failed).to be true
+      expect(response).to redirect_to(user_path(user))
+      expect(flash[:alert]).to be
+    end
+
     it "someone else's game" do
       someone_else_game = create(:game_with_questions)
       params = { id: someone_else_game.id }
