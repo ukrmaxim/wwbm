@@ -30,6 +30,6 @@ class GameHelpGenerator
     # c ~80% вероятностью выбираем правильный ключ, и с 20% - неправильный
     key = rand(10) > 2 ? correct_key : keys.sample
 
-    t('game_help.friend_call', name: t('game_help.friends').sample, variant: key.upcase)
+    I18n.t('game_help.friend_call', name: I18n.t('game_help.friends').sample, variant: key.upcase)
   end
 end

@@ -13,13 +13,50 @@ RSpec.describe GamesController, type: :controller do
   context 'Anon' do
     # из экшена show анона посылаем
     it 'kick from #show' do
-      # вызываем экшен
       params = { id: game_w_questions.id }
       get :show, params: params
-      # проверяем ответ
+
       expect(response.status).not_to eq(200) # статус не 200 ОК
       expect(response).to redirect_to(new_user_session_path) # devise должен отправить на логин
-      expect(flash[:alert]).to be # во flash должен быть прописана ошибка
+      expect(flash[:alert]).to be # во flash должна быть прописана ошибка
+    end
+
+    it "can't create a game" do
+      generate_questions(15)
+      post :create
+      game = assigns(:game)
+
+      expect(response.status).not_to eq(200)
+      expect(game).to be nil
+      expect(response).to redirect_to(new_user_session_path)
+      expect(flash[:alert]).to be
+    end
+
+    it "can't answer" do
+      params = { id: game_w_questions.id, letter: game_w_questions.current_game_question.correct_answer_key }
+      put :answer, params: params
+
+      expect(response.status).not_to eq(200)
+      expect(response).to redirect_to(new_user_session_path)
+      expect(flash[:alert]).to be
+    end
+
+    it "can't take money" do
+      params = { id: game_w_questions.id }
+      put :take_money, params: params
+
+      expect(response.status).not_to eq(200)
+      expect(response).to redirect_to(new_user_session_path)
+      expect(flash[:alert]).to be
+    end
+
+    it "cannot use help" do
+      params = { id: game_w_questions.id, help_type: :friend_call }
+      put :help, params: params
+
+      expect(response.status).not_to eq(200)
+      expect(response).to redirect_to(new_user_session_path)
+      expect(flash[:alert]).to be
     end
   end
 
@@ -67,6 +104,42 @@ RSpec.describe GamesController, type: :controller do
       expect(game.current_level).to be > 0
       expect(response).to redirect_to(game_path(game))
       expect(flash.empty?).to be true # удачный ответ не заполняет flash
+    end
+
+    it "someone else's game" do
+      someone_else_game = create(:game_with_questions)
+      params = { id: someone_else_game.id }
+      get :show, params: params
+
+      expect(response.status).not_to eq(200)
+      expect(response).to redirect_to(root_path)
+      expect(flash[:alert]).to be
+    end
+
+    it 'takes money until the end of the game' do
+      params = { id: game_w_questions.id }
+      game_w_questions.update_attribute(:current_level, 2)
+      put :take_money, params: params
+      game = assigns(:game)
+
+      expect(game.finished?).to be true
+      expect(game.prize).to eq(200)
+
+      user.reload
+      expect(user.balance).to eq(200)
+      expect(response).to redirect_to(user_path(user))
+      expect(flash[:notice]).to be
+    end
+
+    it 'create a game while the previous game is not finished' do
+      expect(game_w_questions.finished?).to be false
+      expect { post :create }.to change(Game, :count).by(0)
+
+      game = assigns(:game)
+      expect(game).to be nil
+
+      expect(response).to redirect_to(game_path(game_w_questions))
+      expect(flash[:alert]).to be
     end
   end
 end
