@@ -42,10 +42,5 @@ RSpec.feature 'User creates game', type: :feature do
     expect(page).to have_content '1381'
     expect(page).to have_content '1382'
     expect(page).to have_content '1383'
-
-    # В процессе работы можно использовать
-    # save_and_open_page
-    # но в конечном коде (который вы кладете в репозиторий)
-    # этого кода быть не должно, также, как и byebug
   end
 end
