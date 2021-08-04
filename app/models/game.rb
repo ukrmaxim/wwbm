@@ -81,7 +81,7 @@ class Game < ApplicationRecord
 
   # проверяет текущее время и грохает игру + возвращает true если время прошло
   def time_out!
-    if (Time.now - created_at) > TIME_LIMIT
+    if (Time.current - created_at) > TIME_LIMIT
       finish_game!(fire_proof_prize(previous_level), true)
       true
     end
@@ -176,7 +176,7 @@ class Game < ApplicationRecord
     # и баланс юзера пополняется только вместе
     transaction do
       self.prize = amount
-      self.finished_at = Time.now
+      self.finished_at = Time.current
       self.is_failed = failed
       user.balance += amount
       save!

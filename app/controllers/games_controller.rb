@@ -66,7 +66,7 @@ class GamesController < ApplicationController
     @game.take_money!
     redirect_to user_path(current_user),
                 flash: { notice: t('controllers.games.game_finished',
-                                    prize: view_context.number_to_currency(@game.prize)) }
+                prize: view_context.number_to_currency(@game.prize)) }
   end
 
   # запрашиваем помощь в текущем вопросе

@@ -24,7 +24,6 @@ RSpec.feature 'User creates game', type: :feature do
 
   # Сценарий успешного создания игры
   scenario 'successfully' do
-
     # Заходим на главную
     visit '/'
 

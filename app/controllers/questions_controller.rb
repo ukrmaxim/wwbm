@@ -31,15 +31,15 @@ class QuestionsController < ApplicationController
       return false
     end
 
-    start_time = Time.now
+    start_time = Time.current
     # В одной большой транзакции создаем сразу массив вопросов, считаем неудачные
     failed_count = create_questions_from_lines(file_lines, level)
 
     # отправляем на страницу new и выводим статистику о проделаных операциях
     redirect_to new_questions_path,
                 notice: "Уровень #{level}, обработано #{file_lines.size}," \
-                  " создано #{file_lines.size - failed_count}," \
-                  " время #{Time.at((Time.now - start_time).to_i).utc.strftime '%S.%L сек'}"
+                        " создано #{file_lines.size - failed_count}," \
+                        " время #{Time.at((Time.current - start_time).to_i).utc.strftime '%S.%L сек'}"
   end
 
   private

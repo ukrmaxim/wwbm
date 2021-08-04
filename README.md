@@ -1,24 +1,62 @@
-# README
+# Who Wants to Be a Millionaire
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+In order to win 1 million, you need to correctly answer 15 questions from various fields of knowledge.
+Each question has 4 possible answers, of which only one is correct. Each question has a specific cost.
+The player is offered 3 tips: "Hall help", "50-50", "Call a friend".
 
-Things you may want to cover:
+This tutorial application was used to practice testing rail applications using RSpec.
 
-* Ruby version
+## Ruby and Ruby on Rails version
 
-* System dependencies
+- Ruby 3.0.0
 
-* Configuration
+- Rails  6.1.3
 
-* Database creation
+## The main gems used for test application:
 
-* Database initialization
+`capybara`, `factory_bot_rails`, `launchy`, `pry-rails`, `rails-controller-testing`, `rspec-rails`, `shoulda-matchers`
 
-* How to run the test suite
+## Deploy app
 
-* Services (job queues, cache servers, search engines, etc.)
+Note: all commands must be run from the command line/terminal, from the directory, where you clone repository
 
-* Deployment instructions
+1. Download or clone repository, then run bundler
 
-* ...
+```ruby
+bundle exec install
+```
+
+2. To create a database, run
+
+```ruby
+rails db:schema:load
+```
+
+## How to run tests
+
+To run all tests, typing
+
+```ruby
+rspec
+```
+
+## How to run app
+
+To start the Rails server, type
+
+```ruby
+rails s
+```
+
+## How to play
+
+1. From Rails console, create user with admin role
+
+```ruby
+rails c
+
+User.create!(name: 'Ivan', email: 'mail@mail.com', is_admin: true, balance: 0, password: '123456')
+```
+
+2. Login to the application and click the "Add Questions" button. You can use ready-made questions from the
+archive in folder `data/questions_full.zip`

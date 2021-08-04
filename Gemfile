@@ -14,11 +14,10 @@ gem 'webpacker', '~> 5.0'
 
 group :development, :test do
   gem 'capybara', '~> 3.35', '>= 3.35.3'
-  gem 'dotenv-rails', '~> 2.7', '>= 2.7.6'
   gem 'factory_bot_rails'
   gem 'launchy', '~> 2.5'
   gem 'pry-rails'
+  gem 'rails-controller-testing', '~> 1.0', '>= 1.0.5'
   gem 'rspec-rails', '~> 5.0', '>= 5.0.1'
   gem 'shoulda-matchers', '~> 4.5', '>= 4.5.1'
-  gem 'rails-controller-testing', '~> 1.0', '>= 1.0.5'
 end

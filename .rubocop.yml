@@ -1,0 +1,26 @@
+require:
+  - rubocop-rails
+
+Style/AsciiComments:
+  Enabled: false
+
+AllCops:
+  NewCops: enable
+
+Rails:
+  Enabled: true
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 120
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 30
+
+Metrics/BlockLength:
+  Max: 30

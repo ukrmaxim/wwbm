@@ -1,5 +1,5 @@
 class Question < ApplicationRecord
-  QUESTION_LEVELS = (0..14).freeze
+  QUESTION_LEVELS = (0..14)
 
   # у вопроса должен быть уровень сложности
   validates :level, presence: true, inclusion: { in: QUESTION_LEVELS }

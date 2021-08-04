@@ -41,7 +41,7 @@ RSpec.describe GamesController, type: :controller do
       expect(flash[:alert]).to be
     end
 
-    it "can't take money" do
+    it 'can not take money' do
       params = { id: game_w_questions.id }
       put :take_money, params: params
 
@@ -50,7 +50,7 @@ RSpec.describe GamesController, type: :controller do
       expect(flash[:alert]).to be
     end
 
-    it "cannot use help" do
+    it 'can not use help' do
       params = { id: game_w_questions.id, help_type: :friend_call }
       put :help, params: params
 
